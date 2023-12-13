@@ -1,0 +1,73 @@
+<%# -------------------Block gris foncé----------------------------- %>
+<div class="head-block-dark">
+  <div class="container">
+    <div class="flex align-center justify-between">
+      <%= link_to training_path(@training), class: "link-decoration-none" do %>
+      <div class="link-head">
+        <i class="ri-arrow-left-s-line"></i>
+        <h1 class="color-white">Saisir vos données</h1>
+      </div>
+      <% end %>
+      <div><i class="ri-more-2-line icone-sans-fond"></i></div>
+    </div>
+    <div class="margin-top-16">
+      <h2 class="color-white"><%= @training.name %></h2>
+      <div>
+        <p class="color-white"><%= @training.sport.name %> -
+          Crée le <%= @training.created_at.to_date.strftime('%e %h %g') %></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%# -------------------Form Nested----------------------------- %>
+
+<div class="container">
+
+
+  <%= simple_form_for(@seance) do |seance_form| %>
+    <h2 class="mb-3 mt-3">Données de votre séance</h2>
+    <div>
+      <%# -------------------input seance----------------------------- %>
+      <%# <%= seance_form.input :date, order: [:day, :month, :year] %>
+<%= seance_form.input :date,
+            as: :string,
+            input_html: { data: { controller: "datepicker" } } %>
+
+      <%= seance_form.input :comment,
+        label: "Commentaire",
+        placeholder: "Ajouter un commentaire à votre entrainement",
+        class: "forminput" %>
+
+      <%= seance_form.input :rating,
+        label: "Note",
+        placeholder: "Ajouter une note à l'entrainement",
+        collection: 1..5,
+        class: "forminput" %>
+
+      <%= seance_form.input :duration,
+        label: "Durée (minutes)",
+        placeholder: "Durée de l'entrainement",
+        class: "forminput" %>
+
+
+    </div>
+    <h2 class="mb-3 mt-5">Données par exercice</h2>
+    <% @training_exercices.each do |training_exercice|  %>
+      <p class="fw-bold h3 my-3"><%= training_exercice.exercice.name %> :</p>
+      <% training_exercice.training_metrics.order(:position).each do |training_metric| %>
+        <%= seance_form.simple_fields_for :training_values, training_metric.training_values.find_by(seance: @seance) do |f| %>
+        <%# -------------------input training_value----------------------------- %>
+            <div>
+              <%= f.input :value,
+                label: "#{training_metric.metric} (#{training_metric.unit})",
+                class: "forminput" %>
+            </div>
+        <% end %>
+      <% end %>
+       <hr class="my-4">
+    <% end %>
+      <%= seance_form.button :submit, 'Enregistrer', class: "btn-primary forminput mb-5" %>
+  <% end %>
+
+</div>

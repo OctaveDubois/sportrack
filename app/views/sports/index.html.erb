@@ -1,0 +1,17 @@
+
+<%= link_to user_sports_path, class: "link-decoration-none" do %>
+  <div class="link-head">
+    <i class="ri-arrow-left-s-line"></i>
+    <h1>Choisir une activité</h1>
+  </div>
+<% end %>
+
+<div class="container ">
+  <% @sports.each do |sport| %>
+    <div class="sportcard">
+    <%= button_to sport_user_sports_path(sport), method: :post, class: "formbutton" do %>
+      <%= sport.name %><i class="fa-solid fa-chevron-right"></i>
+    <% end %>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,74 @@
+<div class="container">
+  <%# <%= image_tag "logo.png", class:"logo mb-4"%>
+  <div class="flex jcsb gap2 mb-3">
+    <div>
+      <p class="mb-2">Bonjour <%= current_user.nick_name %>,</p>
+      <h1>Prêt pour un entraînement ?</h1>
+    </div>
+    <%= image_tag "profil.jpg", class:"avatar"%>
+  </div>
+
+  <%= link_to sports_path, class:"indexcard" do %>
+  <h3 class="color-white">Créer un entraînement</h3>
+
+  <i class="ri-arrow-right-line"></i>
+  <% end %>
+</div>
+
+<%# -----------------------TRAININGS -------------------------------- %>
+
+
+<div class="container">
+  <div class="flex jcsb padding-b aicenter">
+    <h2>Vos entraînements</h2>
+    <%= link_to trainings_path, class:"flex aicenter gap" do %>
+    <p>voir tout</p>
+    <i class="ri-arrow-right-line"></i>
+    <% end %>
+  </div>
+
+  <% @trainings.limit(1).each do |training| %>
+
+  <%= link_to training_path(training.id), class: "training_card" do %>
+
+  <div class="wrapper training-card">
+    <div class="flex jcsb mb-3 aicenter">
+      <h3><%= training.name %></h3>
+      <p class="<%= training.user_sport.sport.name == 'Natation' ? 'tag' : 'tag-other' %>">
+        <%= training.user_sport.sport.name %></p>
+    </div>
+
+    <div class="flex jcsb">
+      <div class="flex">
+        <i class="fa-solid fa-person-walking me-2" style=""></i>
+        <p class=""><%= training.exercices.count %> <%= training.exercices.count <= 1 ? 'exercice' : 'exercices' %></p>
+      </div>
+    </div>
+  </div>
+
+  <% end %>
+  <% end %>
+
+</div>
+
+<%# -----------------------EMPLACEMENT POUR LES GRAPHIQUES DASHBOARD -------------------------------- %>
+
+<div class="container">
+  <h2 class="padding-b" id="title-fav">Mes données favorites</h2>
+
+  <div data-controller="dataindex">
+
+    <div data-dataindex-target="container">
+
+
+        <div class="temporary-card">
+            <p class="mb-3">Ajoutez vos données préférées à partir de vos entraînements !</p>
+            <%= image_tag "data.png", class:"data-img"%>
+        </div>
+
+
+    </div>
+
+  </div>
+
+</div>
